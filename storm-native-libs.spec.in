@@ -4,9 +4,9 @@
 Name: storm-native-libs
 Version: 1.0.0
 Release: 1%{?dist}
-Summary: The StoRM backend server native libraries
+Summary: The StoRM backend server interface to native libraries
 
-Group: Applications/Internet
+Group: Development/Libraries
 License: ASL 2.0
 URL: https://github.com/italiangrid/storm-native-libs
 Source: %{name}-%{version}.tar.gz
@@ -22,12 +22,46 @@ BuildRequires: lcmaps-without-gsi-devel
 BuildRequires: lcmaps-interface
 BuildRequires: java-1.6.0-openjdk-devel
 
+%description
+This package provides the StoRM backend interface to posix libraries.
+
+%package java
+Summary: The StoRM backend server interface to native libraries (java part)
+Group: Development/Libraries
+Requires: %{name}%{?_isa} = %{version}-%{release}
 Requires: java-1.6.0-openjdk
-Requires: lcmaps-without-gsi
+
+%description java 
+This package provides the StoRM backend interface to posix libraries.
+In particular, this package provides the Java swig stubs.
+
+%package gpfs
+Summary: The StoRM backend server interface to GPFS native libraries
+Group: Development/Libraries
+Requires: %{name}%{?_isa} = %{version}-%{release}
 Requires: libacl
 
-%description
-This package provides the StoRM backend native libraries.
+%description gpfs 
+This package provides the StoRM backend interface to GPFS libraries.
+
+%package lcmaps
+Summary: The StoRM backend server interface to LCMAPS native libraries
+Group: Development/Libraries
+Requires: %{name}%{?_isa} = %{version}-%{release}
+Requires: lcmaps-without-gsi
+
+%description lcmaps 
+This package provides the StoRM backend interface to LCMAPS libraries.
+
+%package utils
+Summary: The StoRM backend server interface to native utility functions
+Group: Development/Libraries
+Requires: %{name}%{?_isa} = %{version}-%{release}
+Requires: libacl
+
+%description utils
+This package provides the StoRM backend interface to other native utility
+functions.
 
 %prep
 %setup -q -n storm-native-libs 
@@ -52,33 +86,50 @@ install -m 644 target/storm-native-interface-%{pom_version}.jar \
     $RPM_BUILD_ROOT%{_javadir}/storm-backend-server
 
 # Move libraries
-install -dm 755 $RPM_BUILD_ROOT%{_libdir}/storm-backend-server
-rm -f $RPM_BUILD_ROOT%{_libdir}/libgpfs.*
-rm -f $RPM_BUILD_ROOT%{_libdir}/*.0
-rm -f $RPM_BUILD_ROOT%{_libdir}/*.a
-rm -f $RPM_BUILD_ROOT%{_libdir}/*.la
-mv $RPM_BUILD_ROOT%{_libdir}/*.so $RPM_BUILD_ROOT%{_libdir}/storm-backend-server
+install -dm 755 $RPM_BUILD_ROOT%{_libdir}
 
-# Remove debuginfo stuff, if needed
-#rm -rf $RPM_BUILD_ROOT%{_usrsrc}
-#rm -rf $RPM_BUILD_ROOT%{_usr}/lib/debug
+rm -f $RPM_BUILD_ROOT%{_libdir}/libgpfs.*
+rm -f $RPM_BUILD_ROOT%{_libdir}/*.la
+rm -f $RPM_BUILD_ROOT%{_libdir}/*.a
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root,-)
+%{_libdir}/libposixapi_interface.so.0*
+%{_libdir}/libposixapi_interface.so
+
+%files java
+%defattr(-,root,root,-)
 %{_javadir}/storm-backend-server/storm-native-interface-%{pom_version}.jar
 
-%dir %{_libdir}/storm-backend-server
+%files gpfs 
+%defattr(-,root,root,-)
+%{_libdir}/libgpfsapi_interface.so.0*
+%{_libdir}/libgpfsapi_interface.so
 
-%{_libdir}/storm-backend-server/libposixapi_interface.so
-%{_libdir}/storm-backend-server/libgpfsapi_interface.so
-%{_libdir}/storm-backend-server/libstorm_cutil.so
-%{_libdir}/storm-backend-server/libstorm_lcmaps.so
+%files lcmaps
+%defattr(-,root,root,-)
+%{_libdir}/libstorm_lcmaps.so.0*
+%{_libdir}/libstorm_lcmaps.so
 
-# %pre
-# %preun
-# %post
+%files utils
+%defattr(-,root,root,-)
+%{_libdir}/libstorm_cutil.so.0*
+%{_libdir}/libstorm_cutil.so
+
+%post -p /sbin/ldconfig
+%postun -p /sbin/ldconfig
+
+%post gpfs -p /sbin/ldconfig
+%postun gpfs -p /sbin/ldconfig
+
+%post lcmaps -p /sbin/ldconfig
+%postun lcmaps -p /sbin/ldconfig
+
+%post utils -p /sbin/ldconfig
+%postun utils -p /sbin/ldconfig
 
 %changelog
 * Fri Mar 1 2013 Andrea Ceccanti <andrea.ceccanti at cnaf.infn.it> - 1.0.0-1
