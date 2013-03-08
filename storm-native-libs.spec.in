@@ -69,6 +69,8 @@ functions.
 %build
 pushd native
 ./bootstrap
+export CFLAGS="-O0 -ggdb -Wall"
+export CXXFLAGS="-O0 -ggdb -Wall"
 %configure --with-java_home=%{java_home}
 make
 popd
@@ -99,6 +101,9 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,root,-)
 %{_libdir}/libposixapi_interface.so.0*
 %{_libdir}/libposixapi_interface.so
+
+%{_libdir}/libstormxattrs.so.0*
+%{_libdir}/libstormxattrs.so
 
 %files java
 %defattr(-,root,root,-)
