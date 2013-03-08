@@ -102,8 +102,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/libposixapi_interface.so.0*
 %{_libdir}/libposixapi_interface.so
 
-%{_libdir}/libstormxattrs.so.0*
-%{_libdir}/libstormxattrs.so
+%{_libdir}/libstorm-xattrs.so.0*
+%{_libdir}/libstorm-xattrs.so
 
 %files java
 %defattr(-,root,root,-)
