@@ -21,6 +21,7 @@ BuildRequires: libacl-devel
 BuildRequires: lcmaps-without-gsi-devel
 BuildRequires: lcmaps-interface
 BuildRequires: java-1.6.0-openjdk-devel
+BuildRequires: gpfs.base
 
 %description
 This package provides the StoRM backend interface to posix libraries.
@@ -48,20 +49,11 @@ This package provides the StoRM backend interface to GPFS libraries.
 Summary: The StoRM backend server interface to LCMAPS native libraries
 Group: Development/Libraries
 Requires: %{name}%{?_isa} = %{version}-%{release}
+Requires: gpfs.base
 Requires: lcmaps-without-gsi
 
 %description lcmaps 
 This package provides the StoRM backend interface to LCMAPS libraries.
-
-%package utils
-Summary: The StoRM backend server interface to native utility functions
-Group: Development/Libraries
-Requires: %{name}%{?_isa} = %{version}-%{release}
-Requires: libacl
-
-%description utils
-This package provides the StoRM backend interface to other native utility
-functions.
 
 %prep
 %setup -q -n storm-native-libs 
@@ -71,7 +63,7 @@ pushd native
 ./bootstrap
 export CFLAGS="-O0 -ggdb -Wall"
 export CXXFLAGS="-O0 -ggdb -Wall"
-%configure --with-java_home=%{java_home}
+%configure --with-java_home=%{java_home} --enable-gpfs
 make
 popd
 
@@ -119,11 +111,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/libstorm_lcmaps.so.0*
 %{_libdir}/libstorm_lcmaps.so
 
-%files utils
-%defattr(-,root,root,-)
-%{_libdir}/libstorm_cutil.so.0*
-%{_libdir}/libstorm_cutil.so
-
 %post -p /sbin/ldconfig
 %postun -p /sbin/ldconfig
 
@@ -132,9 +119,6 @@ rm -rf $RPM_BUILD_ROOT
 
 %post lcmaps -p /sbin/ldconfig
 %postun lcmaps -p /sbin/ldconfig
-
-%post utils -p /sbin/ldconfig
-%postun utils -p /sbin/ldconfig
 
 %changelog
 * Fri Mar 1 2013 Andrea Ceccanti <andrea.ceccanti at cnaf.infn.it> - 1.0.0-1
