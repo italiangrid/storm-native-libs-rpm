@@ -14,7 +14,7 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires: libtool
 BuildRequires: pkgconfig
-BuildRequires: maven
+BuildRequires: apache-maven
 BuildRequires: jpackage-utils
 BuildRequires: swig
 BuildRequires: libacl-devel
