@@ -3,7 +3,7 @@
 
 Name: storm-native-libs
 Version: 1.0.4
-Release: 0%{?dist}
+Release: 1%{?dist}
 Summary: The StoRM backend server interface to native libraries
 
 Group: Development/Libraries
