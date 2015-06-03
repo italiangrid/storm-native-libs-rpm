@@ -125,7 +125,7 @@ rm -rf $RPM_BUILD_ROOT
 %postun lcmaps -p /sbin/ldconfig
 
 %changelog
-* Tue Apr 14 2015 Enrico Vianello <enrico.vianello at cnaf.infn.it> - 1.0.4-0
+* Tue Apr 14 2015 Enrico Vianello <enrico.vianello at cnaf.infn.it> - 1.0.4-1
   Fix for https://issues.infn.it/jira/browse/STOR-474
 * Wed Nov 12 2014 Enrico Vianello <enrico.vianello at cnaf.infn.it> - 1.0.3-1
   Fix for https://issues.infn.it/jira/browse/STOR-419
