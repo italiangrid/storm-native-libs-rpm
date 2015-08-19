@@ -2,7 +2,7 @@
 %global mvn_settings @@MVN_SETTINGS@@
 
 Name: storm-native-libs
-Version: 1.0.3
+Version: 1.0.4
 Release: 1%{?dist}
 Summary: The StoRM backend server interface to native libraries
 
@@ -125,6 +125,8 @@ rm -rf $RPM_BUILD_ROOT
 %postun lcmaps -p /sbin/ldconfig
 
 %changelog
+* Tue Apr 14 2015 Enrico Vianello <enrico.vianello at cnaf.infn.it> - 1.0.4-1
+  Fix for https://issues.infn.it/jira/browse/STOR-474
 * Wed Nov 12 2014 Enrico Vianello <enrico.vianello at cnaf.infn.it> - 1.0.3-1
   Fix for https://issues.infn.it/jira/browse/STOR-419
 * Wed Jun 26 2014 Andrea Ceccanti <andrea.ceccanti at cnaf.infn.it> - 1.0.2-1
